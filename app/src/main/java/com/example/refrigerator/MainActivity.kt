@@ -3,6 +3,8 @@ package com.example.refrigerator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
@@ -20,54 +22,63 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-       initialize()
+        initialize()
         event()
     }
 
-    private fun initialize(){
-        materials=ArrayList()
+    private fun initialize() {
+        materials = ArrayList()
     }
-    private fun event(){
 
+    private fun event() {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                sendMaterial(editText.text.toString())
+            }
+
+        })
         ok_btn.setOnClickListener {
-
-            sendMaterial(editText.toString())
+            sendMaterial(editText.text.toString())
         }
     }
 
-    private fun sendMaterial(
-        material: String
-    ) {
-        val listener = Response.Listener<String> {
+    private fun sendMaterial(material: String) {
+        val listener = Response.Listener<String> { response ->
+            try {
+                Log.i("CurrentTag", "ConnectToServer $response")
 
-            val materialArray = JsonParser().parse(it).asJsonArray
-            val materials: ArrayList<MaterialModel> = ArrayList()
-            for (i in 0 until materialArray.size()) {
-                val material = Gson().fromJson(materialArray[i], MaterialModel::class.java)
-                materials.add(material)
+                val materialArray = JsonParser().parse(response).asJsonArray
+                val materials: ArrayList<MaterialModel> = ArrayList()
+                for (i in 0 until materialArray.size()) {
+                    val material = Gson().fromJson(materialArray[i], MaterialModel::class.java)
+                    materials.add(material)
+                }
+                this.materials = materials
+            } catch (e: Exception) {
+                Log.i("CurrentTag", "ConnectToServer $e")
             }
-            this.materials = materials
-
-
-            Toast.makeText(this, "connect to server ", Toast.LENGTH_SHORT).show()
-//            Log.i("", it.toString())
-//            if (it == "OK") {
-//                Log.i("TAG3", it.toString())
-//                Toast.makeText(this, "connect to server ", Toast.LENGTH_SHORT).show()
-//             //javab tooye recycler chap she
-//            } else {
-//                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
-//                Log.i("TAG", it)
-//            }
         }
         val error = Response.ErrorListener {
             Toast.makeText(this, "Error2", Toast.LENGTH_SHORT).show()
-            Log.i("TAG2", it.toString())
+            Log.i("CurrentTag", it.toString())
         }
+        Log.i(
+            "CurrentTag",
+            "Link -> http://192.168.1.58/yakhchal/search_material.php?material=$material"
+        )
+
         val request = StringRequest(
             Request.Method.POST,
-            "http://192.168.1.105/yakhchal/search_material.php?" +
-                    "material=" + material ,
+            "http://192.168.1.58/yakhchal/search_material.php?" +
+                    "material=" + material,
             listener,
             error
         )
