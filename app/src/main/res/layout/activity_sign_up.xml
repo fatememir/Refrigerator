@@ -6,4 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/lastNameEdittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="last name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/nameEditText"
+        app:layout_constraintStart_toStartOf="@+id/nameEditText"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+
+    <EditText
+        android:id="@+id/userNameEdittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="user name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/lastNameEdittext"
+        app:layout_constraintStart_toStartOf="@+id/lastNameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/lastNameEdittext" />
+
+    <EditText
+        android:id="@+id/passwordEidtex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPersonName"
+        android:password="true"
+        app:layout_constraintEnd_toEndOf="@+id/userNameEdittext"
+        app:layout_constraintStart_toStartOf="@+id/userNameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEdittext" />
+
+    <EditText
+        android:id="@+id/phonNumberEdittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="phone number"
+        android:inputType="textPersonName|phone"
+        android:maxLength="11"
+        app:layout_constraintEnd_toEndOf="@+id/passwordEidtex"
+        app:layout_constraintStart_toStartOf="@+id/passwordEidtex"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEidtex" />
+
+    <TextView
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phonNumberEdittext" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.loginapp
+package com.example.refrigerator
 
 import com.google.gson.annotations.SerializedName
 data class  UserModel(
