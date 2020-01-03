@@ -1,10 +1,13 @@
 package com.example.refrigerator
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class MaterialAdapter(
@@ -32,11 +35,20 @@ class MaterialAdapter(
 //                holder.selectIcon.setImageResource(R.drawable.unchecked)
 //                holder.details.visibility = View.GONE
         setData(holder, materials[position])
+                  holder.title.setOnClickListener {
+                      Toast.makeText(context,materials[position].name.toString(), Toast.LENGTH_SHORT).show()
+                      val intent = Intent(context, MainActivity::class.java)
+                      intent.putExtra("materialName", materials[position].name)
+                     context.startActivity(intent)
+                  }
 //        events(holder, position)
     }
 
     private fun setData(viewHolder: ViewHolder, material: MaterialModel) {
         viewHolder.title.text = material.name
+
+
+
     }
 
     interface OnMaterialSelected {
