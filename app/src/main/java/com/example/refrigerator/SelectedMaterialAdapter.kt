@@ -31,9 +31,11 @@ class SelectedMaterialAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//                holder.selectIcon.setImageResource(R.drawable.unchecked)
-//                holder.details.visibility = View.GONE
         setData(holder, SelectedMaterials[position])
+        holder.deleteIcon.setOnClickListener {
+           SelectedMaterials.removeAt(position)
+        }
+
 
     }
 

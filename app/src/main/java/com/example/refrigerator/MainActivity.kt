@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
 
         val request = StringRequest(
             Request.Method.POST,
-            "http://192.168.1.100/yakhchal/search_material.php?" +
+            Links.mainActivityLink +
                     "material=" + material,
             listener,
             error
