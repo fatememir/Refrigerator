@@ -36,10 +36,8 @@ class MaterialAdapter(
 //                holder.details.visibility = View.GONE
         setData(holder, materials[position])
                   holder.title.setOnClickListener {
-                      Toast.makeText(context,materials[position].name.toString(), Toast.LENGTH_SHORT).show()
-                      val intent = Intent(context, MainActivity::class.java)
-                      intent.putExtra("materialName", materials[position].name)
-                     context.startActivity(intent)
+                      onReceived.onMaterialSelected(materials[position].name)
+//                      Toast.makeText(context,materials[position].name.toString(), Toast.LENGTH_SHORT).show()
                   }
 //        events(holder, position)
     }

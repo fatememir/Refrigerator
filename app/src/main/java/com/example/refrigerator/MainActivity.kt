@@ -35,34 +35,11 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
     private fun initialize() {
         materials = ArrayList()
         selectedMaterials = ArrayList()
-        val bundle: Bundle? = intent.extras
-        var name: String? = bundle?.getString("materialName")
-        selectedMaterials.add(name)
-
-        if (selectedMaterials.isNotEmpty()) {
-            selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, selectedMaterials)
-            selectedMaterialRecycler.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-            var isThere = false
-            for (i in 0 until selectedMaterials.size) {
-                if (name == selectedMaterials[i]) {
-                    isThere = true
-                }
-            }
-
-            if (!isThere) {
-                selectedMaterials.add(name)
-                listAdapter.notifyItemInserted(materials.size - 1)
-                listAdapter.notifyDataSetChanged()
-
-            }
-
-        }
+//        val bundle: Bundle? = intent.extras
+//        var name: String? = bundle?.getString("materialName")
+//        selectedMaterials.add(name)
 
 
-
-        Toast.makeText(this, name.toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun event() {
@@ -72,7 +49,7 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
             //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
             if (keyCode == KeyEvent.KEYCODE_DEL) {
                 for (i in 0 until materials.size) {
-                    materials.removeAt(i)
+                    materials.clear()
                 }
                 listAdapter.notifyDataSetChanged()
             }
@@ -141,12 +118,12 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
         }
         Log.i(
             "CurrentTag",
-            "Link -> http://192.168.1.50/yakhchal/search_material.php?material=$material"
+            "Link -> http://192.168.1.100/yakhchal/search_material.php?material=$material"
         )
 
         val request = StringRequest(
             Request.Method.POST,
-            "http://192.168.1.50/yakhchal/search_material.php?" +
+            "http://192.168.1.100/yakhchal/search_material.php?" +
                     "material=" + material,
             listener,
             error
@@ -160,7 +137,27 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
 
     override fun onMaterialSelected(response: String) {
         Log.i("material", "onAddressSelected $response")
+        selectedMaterials.add(response)
         recyclerView.adapter = MaterialAdapter(this, materials, this)
+        if (selectedMaterials.isNotEmpty()) {
+            selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, selectedMaterials)
+            selectedMaterialRecycler.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+            var isThere = false
+            for (i in 0 until selectedMaterials.size) {
+                if (response == selectedMaterials[i]) {
+                    isThere = true
+                }
+            }
+            if (!isThere) {
+                selectedMaterials.add(response)
+                listAdapter.notifyItemInserted(materials.size - 1)
+                listAdapter.notifyDataSetChanged()
+            }
+
+        }
+        Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
 
 //        apiService.getVehiclePrices(
 //            this,
