@@ -18,10 +18,11 @@ import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
+class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
     private lateinit var materials: ArrayList<MaterialModel>
-    private lateinit var SelectedMaterials: ArrayList<String?>
-    lateinit var adapter: SelectedMaterialAdapter
+    private lateinit var selectedMaterials: ArrayList<String?>
+    lateinit var listAdapter: MaterialAdapter
+    lateinit var selectedAdapter: SelectedMaterialAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,27 +34,27 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
 
     private fun initialize() {
         materials = ArrayList()
-        SelectedMaterials= ArrayList()
+        selectedMaterials = ArrayList()
         val bundle: Bundle? = intent.extras
         var name: String? = bundle?.getString("materialName")
-        SelectedMaterials.add(name)
+        selectedMaterials.add(name)
 
-        if(SelectedMaterials.isNotEmpty()){
-            selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, SelectedMaterials)
+        if (selectedMaterials.isNotEmpty()) {
+            selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, selectedMaterials)
             selectedMaterialRecycler.layoutManager =
                 LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
             var isThere = false
-            for (i in 0 until SelectedMaterials.size) {
-                if (name == SelectedMaterials[i]) {
+            for (i in 0 until selectedMaterials.size) {
+                if (name == selectedMaterials[i]) {
                     isThere = true
                 }
             }
 
             if (!isThere) {
-                SelectedMaterials.add(name)
-                adapter.notifyItemInserted(materials.size - 1)
-                adapter.notifyDataSetChanged()
+                selectedMaterials.add(name)
+                listAdapter.notifyItemInserted(materials.size - 1)
+                listAdapter.notifyDataSetChanged()
 
             }
 
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
 
 
 
-        Toast.makeText(this,name.toString(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, name.toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun event() {
@@ -70,9 +71,10 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
         editText.setOnKeyListener { v, keyCode, event ->
             //You can identify which key pressed buy checking keyCode value with KeyEvent.KEYCODE_
             if (keyCode == KeyEvent.KEYCODE_DEL) {
-                for(i in 0 until materials.size){
-                    materials.removeAt(i)}
-                adapter.notifyDataSetChanged()
+                for (i in 0 until materials.size) {
+                    materials.removeAt(i)
+                }
+                listAdapter.notifyDataSetChanged()
             }
             false
         }
@@ -86,15 +88,17 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(editText.text.toString().isNotEmpty()) {
+                if (editText.text.toString().isNotEmpty()) {
                     sendMaterial(editText.text.toString())
-                }
-                else{
-                    for(i in 0 until materials.size){
-                    materials.removeAt(i)
-//                        materials.removeAt(i)
+                } else {
+                    try {
+                        materials.clear()
+                        //                        materials.removeAt(i)
+                    } catch (e: Exception) {
+
                     }
-                    adapter.notifyDataSetChanged()
+
+                    listAdapter.notifyDataSetChanged()
                 }
             }
 
@@ -104,9 +108,11 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
 
         }
     }
-    private fun showSelectedMaterials(){
+
+    private fun showSelectedMaterials() {
 
     }
+
     private fun sendMaterial(material: String) {
         val listener = Response.Listener<String> { response ->
             try {
@@ -121,8 +127,8 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
                 this.materials = materials
 
 //                Toast.makeText(this,  materials.toString(), Toast.LENGTH_SHORT).show()
-
-                recyclerView.adapter = MaterialAdapter(this, materials,this)
+                listAdapter = MaterialAdapter(this, materials, this)
+                recyclerView.adapter = listAdapter
                 recyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             } catch (e: Exception) {
@@ -135,12 +141,12 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
         }
         Log.i(
             "CurrentTag",
-            "Link -> http://192.168.1.100/yakhchal/search_material.php?material=$material"
+            "Link -> http://192.168.1.50/yakhchal/search_material.php?material=$material"
         )
 
         val request = StringRequest(
             Request.Method.POST,
-            "http://192.168.1.100/yakhchal/search_material.php?" +
+            "http://192.168.1.50/yakhchal/search_material.php?" +
                     "material=" + material,
             listener,
             error
@@ -153,8 +159,8 @@ class MainActivity : AppCompatActivity(),MaterialAdapter.OnMaterialSelected{
 
 
     override fun onMaterialSelected(response: String) {
-       Log.i("material","onAddressSelected $response")
-        recyclerView.adapter = MaterialAdapter(this, materials,this)
+        Log.i("material", "onAddressSelected $response")
+        recyclerView.adapter = MaterialAdapter(this, materials, this)
 
 //        apiService.getVehiclePrices(
 //            this,
