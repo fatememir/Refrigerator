@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +12,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.refrigerator.utils.Links
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
     private fun initialize() {
         materials = ArrayList()
         selectedMaterials = ArrayList()
+
+        selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, selectedMaterials)
+        selectedMaterialRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        val bundle: Bundle? = intent.extras
 //        var name: String? = bundle?.getString("materialName")
 //        selectedMaterials.add(name)
@@ -137,27 +141,21 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
 
     override fun onMaterialSelected(response: String) {
         Log.i("material", "onAddressSelected $response")
-        selectedMaterials.add(response)
-        recyclerView.adapter = MaterialAdapter(this, materials, this)
-        if (selectedMaterials.isNotEmpty()) {
-            selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, selectedMaterials)
-            selectedMaterialRecycler.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-            var isThere = false
-            for (i in 0 until selectedMaterials.size) {
-                if (response == selectedMaterials[i]) {
-                    isThere = true
-                }
+//        selectedMaterials.add(response)
+//        recyclerView.adapter = MaterialAdapter(this, materials, this)
+        var isThere = false
+        for (i in 0 until selectedMaterials.size) {
+            if (response == selectedMaterials[i]) {
+                isThere = true
             }
-            if (!isThere) {
-                selectedMaterials.add(response)
-                listAdapter.notifyItemInserted(materials.size - 1)
-                listAdapter.notifyDataSetChanged()
-            }
-
         }
-        Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
+        if (!isThere) {
+            selectedMaterials.add(response)
+            listAdapter.notifyItemInserted(materials.size - 1)
+            listAdapter.notifyDataSetChanged()
+        }
+
+        Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
 
 //        apiService.getVehiclePrices(
 //            this,

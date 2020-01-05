@@ -1,4 +1,3 @@
-
 package com.example.refrigerator
 
 import android.content.Context
@@ -33,7 +32,8 @@ class SelectedMaterialAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         setData(holder, SelectedMaterials[position])
         holder.deleteIcon.setOnClickListener {
-           SelectedMaterials.removeAt(position)
+            SelectedMaterials.removeAt(position)
+            notifyItemRemoved(position)
         }
 
 
@@ -51,5 +51,9 @@ class SelectedMaterialAdapter(
         val title: TextView = itemView.findViewById(R.id.materialName)
         val deleteIcon: ImageView = itemView.findViewById(R.id.materialDeleteIcon)
 
+    }
+
+    interface DeleteItem{
+        fun deleteItem(selectedMaterials: ArrayList<String?>)
     }
 }
