@@ -9,6 +9,7 @@
         android:id="@+id/materialConstraint"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@drawable/search_shape"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,9 +27,11 @@
             android:id="@+id/materialDeleteIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/materialName"
             app:layout_constraintEnd_toStartOf="@+id/materialName"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/materialName"
             app:srcCompat="@android:drawable/ic_delete" />
     </androidx.constraintlayout.widget.ConstraintLayout>
