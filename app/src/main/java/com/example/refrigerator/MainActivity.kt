@@ -8,10 +8,12 @@ import android.view.KeyEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.refrigerator.adapters.FilterAdapter
 import com.example.refrigerator.utils.Links
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
     private lateinit var selectedMaterials: ArrayList<String?>
     lateinit var listAdapter: MaterialAdapter
     lateinit var selectedAdapter: SelectedMaterialAdapter
+    private lateinit var foods : ArrayList<String?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +38,13 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
     private fun initialize() {
         materials = ArrayList()
         selectedMaterials = ArrayList()
+        foods= ArrayList()
 
+
+        filters()
         selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, selectedMaterials)
-        selectedMaterialRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        selectedMaterialRecycler.layoutManager =StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 //        val bundle: Bundle? = intent.extras
 //        var name: String? = bundle?.getString("materialName")
 //        selectedMaterials.add(name)
@@ -166,6 +172,15 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
 //        )
     }
 
+
+      private fun filters(){
+      foods = arrayListOf("پلو","کباب","خورشت","دسر"," سالاد")
+          mainFiltersRecycler.adapter = FilterAdapter(this, foods)
+          mainFiltersRecycler.layoutManager =StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+
+      }
 //   override fun onMaterialShow(response: String) {
 //        Log.i("material","onAddressSelected $response")
 //        selectedMaterialRecycler.adapter = SelectedMaterialAdapter(this, SelectedMaterials,this)
