@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +15,15 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.refrigerator.adapters.FilterAdapter
+import com.example.refrigerator.classes.ApiServices
 import com.example.refrigerator.utils.Links
+import com.example.refrigerator.views.ButtonShape
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
+class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected , ApiServices.OnRecived {
     private lateinit var materials: ArrayList<MaterialModel>
     private lateinit var selectedMaterials: ArrayList<String?>
     lateinit var listAdapter: MaterialAdapter
@@ -33,6 +36,8 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
 
         initialize()
         event()
+
+
     }
 
     private fun initialize() {
@@ -97,6 +102,11 @@ class MainActivity : AppCompatActivity(), MaterialAdapter.OnMaterialSelected {
     }
 
     private fun showSelectedMaterials() {
+
+    }
+
+
+    override fun onRecived(response: String){
 
     }
 
